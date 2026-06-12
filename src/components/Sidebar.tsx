@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, Workflow, Route, Settings, Box } from "lucide-react";
+import { LayoutDashboard, Users, Workflow, Route, Settings, Box, ClipboardList } from "lucide-react";
 import { View } from "../types";
 import { cn } from "../utils";
 
@@ -13,6 +13,7 @@ export function Sidebar({ currentView, onViewChange }: SidebarProps) {
     { id: "agents", label: "Agent Fleet", icon: Users },
     { id: "workflows", label: "BPMN Workflows", icon: Workflow },
     { id: "routing", label: "LLM Orchestration", icon: Route },
+    { id: "audit", label: "Audit Log", icon: ClipboardList },
     { id: "settings", label: "System Config", icon: Settings },
   ];
 

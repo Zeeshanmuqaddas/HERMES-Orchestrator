@@ -1,4 +1,7 @@
-import { Workflow, PlayCircle, Clock, AlertTriangle, CheckCircle2, GitCommit } from "lucide-react";
+import { useState } from "react";
+import { Workflow, GitCommit, Clock, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { WorkflowBuilder } from "./WorkflowBuilder";
+import { WorkflowDetailView } from "./WorkflowDetailView";
 
 const ACTIVE_WORKFLOWS = [
   { id: "P-HR-092", name: "Employee Onboarding Sequence", type: "BPMN", status: "running", progress: 65, step: "Waiting for IT Provisioning (RPA)" },
@@ -8,6 +11,16 @@ const ACTIVE_WORKFLOWS = [
 ];
 
 export function Workflows() {
+  const [selectedWorkflowId, setSelectedWorkflowId] = useState<string | null>(null);
+
+  const selectedWorkflow = selectedWorkflowId
+    ? ACTIVE_WORKFLOWS.find(w => w.id === selectedWorkflowId)
+    : null;
+
+  if (selectedWorkflow) {
+    return <WorkflowDetailView workflow={selectedWorkflow} onBack={() => setSelectedWorkflowId(null)} />;
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-end">
@@ -34,7 +47,11 @@ export function Workflows() {
           </thead>
           <tbody className="divide-y divide-surface-800/50">
             {ACTIVE_WORKFLOWS.map((wf) => (
-              <tr key={wf.id} className="hover:bg-surface-800/20 transition-colors group">
+              <tr 
+                key={wf.id} 
+                onClick={() => setSelectedWorkflowId(wf.id)}
+                className="hover:bg-surface-800/20 hover:bg-surface-800/40 cursor-pointer transition-colors group"
+              >
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-2">
                     <Workflow className="w-4 h-4 text-surface-500 group-hover:text-brand-400 transition-colors" />
@@ -62,21 +79,8 @@ export function Workflows() {
         </table>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-4">
-          <div className="border border-surface-800 rounded-xl p-5 bg-surface-900/50 relative overflow-hidden flex flex-col justify-center items-center h-64 text-center">
-             <div className="absolute inset-0 pattern-dots text-surface-800 opacity-20 pointer-events-none"></div>
-             <Workflow className="w-12 h-12 text-surface-700 mb-4" />
-             <h3 className="text-surface-300 font-medium mb-2">BPMN Editor</h3>
-             <p className="text-sm text-surface-500 max-w-sm mb-4">Visual designer for workflow orchestration. Select a process from the table to load its graph representation.</p>
-             <button className="px-4 py-2 border border-surface-700 text-surface-300 text-sm hover:text-white hover:bg-surface-800 rounded transition-colors">Open Canvas (Read-only)</button>
-          </div>
-
-          <div className="border border-surface-800 rounded-xl p-5 bg-surface-900/50 flex flex-col justify-center items-center h-64 text-center">
-             <PlayCircle className="w-12 h-12 text-surface-700 mb-4" />
-             <h3 className="text-surface-300 font-medium mb-2">UiPath Maestro</h3>
-             <p className="text-sm text-surface-500 max-w-sm mb-4">Enterprise RPA connection active. 42 bots standing by across 3 tenant nodes.</p>
-             <button className="px-4 py-2 border border-surface-700 text-surface-300 text-sm hover:text-white hover:bg-surface-800 rounded transition-colors">Manage Robots</button>
-          </div>
+      <div className="pt-2">
+        <WorkflowBuilder />
       </div>
     </div>
   );

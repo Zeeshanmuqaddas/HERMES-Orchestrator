@@ -1,6 +1,7 @@
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Activity, AlertTriangle, CheckCircle2, Clock, Terminal, Zap, PauseCircle, PlayCircle } from "lucide-react";
 import { useState } from "react";
+import { SystemTelemetry } from "./SystemTelemetry";
 
 const performanceData = [
   { time: "00:00", requests: 120, automated: 110 },
@@ -60,34 +61,38 @@ export function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        <div className="xl:col-span-2 bg-surface-900 border border-surface-800 rounded-xl p-5 border-t-2 border-t-brand-500 flex flex-col justify-between">
-          <div className="flex justify-between items-center mb-6">
-             <h2 className="text-lg font-medium text-surface-100">Automation Volume vs Fallback</h2>
-             <div className="flex gap-4 text-xs font-mono">
-               <div className="flex items-center gap-1.5"><div className="w-2 h-2 bg-brand-500 rounded-sm"></div>Automated</div>
-               <div className="flex items-center gap-1.5"><div className="w-2 h-2 bg-surface-700 rounded-sm"></div>Total Requests</div>
-             </div>
+        <div className="flex flex-col gap-6 xl:col-span-2">
+          <div className="bg-surface-900 border border-surface-800 rounded-xl p-5 border-t-2 border-t-brand-500 flex flex-col justify-between">
+            <div className="flex justify-between items-center mb-6">
+               <h2 className="text-lg font-medium text-surface-100">Automation Volume vs Fallback</h2>
+               <div className="flex gap-4 text-xs font-mono">
+                 <div className="flex items-center gap-1.5"><div className="w-2 h-2 bg-brand-500 rounded-sm"></div>Automated</div>
+                 <div className="flex items-center gap-1.5"><div className="w-2 h-2 bg-surface-700 rounded-sm"></div>Total Requests</div>
+               </div>
+            </div>
+            <div className="h-[280px] w-full mt-auto">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={performanceData}>
+                  <defs>
+                    <linearGradient id="automatedGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <XAxis dataKey="time" stroke="#475569" fontSize={12} tickLine={false} axisLine={false} />
+                  <YAxis stroke="#475569" fontSize={12} tickLine={false} axisLine={false} />
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: '#0f172a', borderColor: '#1e293b', color: '#f8fafc', borderRadius: '8px' }}
+                    itemStyle={{ color: '#e0e7ff' }}
+                  />
+                  <Area type="monotone" dataKey="requests" stroke="#334155" fill="none" strokeWidth={2} />
+                  <Area type="monotone" dataKey="automated" stroke="#6366f1" fillOpacity={1} fill="url(#automatedGrad)" strokeWidth={2} />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-          <div className="h-[280px] w-full mt-auto">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={performanceData}>
-                <defs>
-                  <linearGradient id="automatedGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <XAxis dataKey="time" stroke="#475569" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis stroke="#475569" fontSize={12} tickLine={false} axisLine={false} />
-                <Tooltip 
-                  contentStyle={{ backgroundColor: '#0f172a', borderColor: '#1e293b', color: '#f8fafc', borderRadius: '8px' }}
-                  itemStyle={{ color: '#e0e7ff' }}
-                />
-                <Area type="monotone" dataKey="requests" stroke="#334155" fill="none" strokeWidth={2} />
-                <Area type="monotone" dataKey="automated" stroke="#6366f1" fillOpacity={1} fill="url(#automatedGrad)" strokeWidth={2} />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
+          
+          <SystemTelemetry />
         </div>
 
         <div className="flex flex-col gap-6">

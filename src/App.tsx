@@ -5,6 +5,7 @@ import { Dashboard } from "./components/Dashboard";
 import { AgentFleet } from "./components/AgentFleet";
 import { Workflows } from "./components/Workflows";
 import { LLMRouter } from "./components/LLMRouter";
+import { AuditLog } from "./components/AuditLog";
 import { View } from "./types";
 
 import { Settings } from "./components/Settings";
@@ -28,6 +29,8 @@ export default function App() {
         return <Workflows />;
       case "routing":
         return <LLMRouter />;
+      case "audit":
+        return <AuditLog />;
       case "settings":
         return <Settings />;
       default:

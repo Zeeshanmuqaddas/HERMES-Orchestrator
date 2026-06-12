@@ -1,4 +1,4 @@
-export type View = "dashboard" | "agents" | "workflows" | "routing" | "settings";
+export type View = "dashboard" | "agents" | "workflows" | "routing" | "settings" | "audit";
 
 export type AgentStatus = "active" | "idle" | "error" | "provisioning";
 
@@ -10,6 +10,8 @@ export interface Agent {
   currentTask: string | null;
   cpu: number;
   memory: number;
+  latency: number;
+  reliability: number;
 }
 
 export type LLMProvider = "GPT-5" | "GPT-4.1" | "Claude Opus" | "Claude Sonnet" | "Gemini 2.5 Pro" | "Gemini Flash" | "Mistral Large" | "DeepSeek" | "Llama Enterprise";
