@@ -6,6 +6,7 @@ import { AgentFleet } from "./components/AgentFleet";
 import { Workflows } from "./components/Workflows";
 import { LLMRouter } from "./components/LLMRouter";
 import { AuditLog } from "./components/AuditLog";
+import { IncidentResponse } from "./components/IncidentResponse";
 import { ToastContainer, ToastMessage } from "./components/Toast";
 import { View } from "./types";
 
@@ -57,6 +58,8 @@ export default function App() {
         return <AgentFleet />;
       case "workflows":
         return <Workflows />;
+      case "incident_response":
+        return <IncidentResponse />;
       case "routing":
         return <LLMRouter />;
       case "audit":

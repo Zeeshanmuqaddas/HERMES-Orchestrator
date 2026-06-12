@@ -1,4 +1,4 @@
-export type View = "dashboard" | "agents" | "workflows" | "routing" | "settings" | "audit";
+export type View = "dashboard" | "agents" | "workflows" | "routing" | "settings" | "audit" | "incident_response";
 
 export type AgentStatus = "active" | "idle" | "error" | "provisioning";
 

@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, Workflow, Route, Settings, Box, ClipboardList } from "lucide-react";
+import { LayoutDashboard, Users, Workflow, Route, Settings, Box, ClipboardList, ShieldAlert } from "lucide-react";
 import { View } from "../types";
 import { cn } from "../utils";
 
@@ -12,6 +12,7 @@ export function Sidebar({ currentView, onViewChange }: SidebarProps) {
     { id: "dashboard", label: "Control Plane", icon: LayoutDashboard },
     { id: "agents", label: "Agent Fleet", icon: Users },
     { id: "workflows", label: "BPMN Workflows", icon: Workflow },
+    { id: "incident_response", label: "Incident Response", icon: ShieldAlert },
     { id: "routing", label: "LLM Orchestration", icon: Route },
     { id: "audit", label: "Audit Log", icon: ClipboardList },
     { id: "settings", label: "System Config", icon: Settings },
@@ -22,7 +23,7 @@ export function Sidebar({ currentView, onViewChange }: SidebarProps) {
       <div className="h-16 flex items-center px-6 border-b border-surface-800">
         <div className="flex items-center gap-2 text-brand-500">
           <Box className="w-6 h-6" />
-          <span className="font-bold tracking-wider text-sm uppercase text-surface-50">Hermes OS</span>
+          <span className="font-bold tracking-wider text-sm uppercase text-surface-50">AIR-OS</span>
         </div>
       </div>
       

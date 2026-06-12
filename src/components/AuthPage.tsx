@@ -36,8 +36,8 @@ export function AuthPage({ onLogin }: AuthPageProps) {
             <div className="absolute inset-0 bg-brand-500/20 blur-xl rounded-2xl"></div>
             <Box className="w-8 h-8 text-brand-400 relative z-10" />
           </div>
-          <h1 className="text-3xl font-semibold tracking-tight text-white mb-2">HERMES OS</h1>
-          <p className="text-sm text-surface-400 font-mono tracking-wider">ENTERPRISE AI CONTROL PLANE</p>
+          <h1 className="text-3xl font-semibold tracking-tight text-white mb-2">AIR-OS</h1>
+          <p className="text-sm text-surface-400 font-mono tracking-wider text-center">PROTOCOL SIFT<br/>INCIDENT RESPONSE PLATFORM</p>
         </div>
 
         <div className="bg-surface-900/80 backdrop-blur-xl border border-surface-800 rounded-2xl shadow-2xl p-8">
