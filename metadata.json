@@ -1,0 +1,6 @@
+{
+  "name": "HERMES Orchestrator",
+  "description": "Enterprise AI Orchestration Platform handling AI Agents, RPA, BPMN Workflows, and Multi-LLM coordination.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
