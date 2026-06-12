@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Server, Settings as SettingsIcon, ShieldCheck, Database, RefreshCw, Scale } from "lucide-react";
+import { Server, Settings as SettingsIcon, ShieldCheck, Database, RefreshCw, Scale, User, Save } from "lucide-react";
 
-type SettingsTab = "directives" | "memory" | "security" | "governance";
+type SettingsTab = "persona" | "directives" | "memory" | "security" | "governance";
 
 export function Settings() {
-  const [activeTab, setActiveTab] = useState<SettingsTab>("governance");
+  const [activeTab, setActiveTab] = useState<SettingsTab>("persona");
   const [directive, setDirective] = useState<string>("Loading core directives from control plane...");
   const [loading, setLoading] = useState<boolean>(true);
   const [platformInfo, setPlatformInfo] = useState<{ version?: string, name?: string }>({});
@@ -51,6 +51,21 @@ export function Settings() {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         <div className="lg:col-span-1 space-y-4">
            {/* Setting sidebar panels */}
+           <div 
+             onClick={() => setActiveTab("persona")}
+             className={`bg-surface-900 border border-surface-800 rounded-xl p-4 cursor-pointer transition-all ${
+               activeTab === "persona" 
+                 ? "border-l-2 border-l-brand-500 hover:border-brand-500/50" 
+                 : "opacity-60 hover:opacity-100"
+             }`}
+           >
+              <div className="flex items-center gap-3 mb-2">
+                <User className={`w-5 h-5 ${activeTab === "persona" ? "text-brand-400" : "text-surface-400"}`} />
+                <h3 className="font-medium text-surface-200">System Persona</h3>
+              </div>
+              <p className="text-xs text-surface-500">Inject and edit the orchestrator system prompt.</p>
+           </div>
+
            <div 
              onClick={() => setActiveTab("directives")}
              className={`bg-surface-900 border border-surface-800 rounded-xl p-4 cursor-pointer transition-all ${
@@ -113,6 +128,10 @@ export function Settings() {
         </div>
 
         <div className="lg:col-span-3">
+          {activeTab === "persona" && (
+            <SystemPersonaSettings defaultPrompt={directive} loading={loading} />
+          )}
+
           {activeTab === "directives" && (
             <div className="bg-surface-900 border border-surface-800 rounded-xl flex flex-col h-[70vh]">
               <div className="p-4 border-b border-surface-800 flex justify-between items-center bg-surface-950/50 rounded-t-xl">
@@ -147,6 +166,77 @@ export function Settings() {
             </div>
           )}
         </div>
+      </div>
+    </div>
+  );
+}
+
+function SystemPersonaSettings({ defaultPrompt, loading }: { defaultPrompt: string, loading: boolean }) {
+  const [prompt, setPrompt] = useState<string>("");
+  const [isSaved, setIsSaved] = useState(false);
+
+  useEffect(() => {
+    if (!loading && defaultPrompt) {
+      const saved = localStorage.getItem("system_persona");
+      if (saved) {
+        setPrompt(saved);
+      } else {
+        setPrompt(defaultPrompt);
+      }
+    }
+  }, [defaultPrompt, loading]);
+
+  const handleSave = () => {
+    localStorage.setItem("system_persona", prompt);
+    setIsSaved(true);
+    setTimeout(() => setIsSaved(false), 2000);
+  };
+
+  const handleReset = () => {
+    localStorage.removeItem("system_persona");
+    setPrompt(defaultPrompt);
+    setIsSaved(true);
+    setTimeout(() => setIsSaved(false), 2000);
+  };
+
+  return (
+    <div className="bg-surface-900 border border-surface-800 rounded-xl flex flex-col h-[70vh] overflow-hidden">
+      <div className="p-4 border-b border-surface-800 flex justify-between items-center bg-surface-950/50">
+        <div className="flex items-center gap-2">
+          <User className="w-4 h-4 text-brand-400" />
+          <h2 className="text-sm font-medium text-surface-200">System Persona Configuration</h2>
+        </div>
+        <div className="flex items-center gap-2">
+           <button 
+             onClick={handleReset}
+             className="px-3 py-1.5 text-xs font-medium text-surface-400 hover:text-white transition-colors border border-surface-700 bg-surface-800 rounded"
+             disabled={loading}
+           >
+             Reset Default
+           </button>
+           <button 
+             onClick={handleSave}
+             disabled={loading}
+             className="flex items-center gap-2 px-3 py-1.5 bg-brand-500 hover:bg-brand-600 text-white text-xs font-medium rounded transition-colors disabled:opacity-50"
+           >
+             <Save className="w-3 h-3" />
+             {isSaved ? "Saved!" : "Save Changes"}
+           </button>
+        </div>
+      </div>
+      
+      <div className="p-6 flex-1 flex flex-col min-h-0 bg-surface-950/20">
+         <p className="text-xs text-surface-500 mb-4 font-mono">
+           This prompt dictates the core behavior, formatting rules, and orchestration logic for the primary LLM control plane. Changes here will alter how workflows are generated and managed. Persisted locally.
+         </p>
+         <textarea
+           value={prompt}
+           onChange={(e) => setPrompt(e.target.value)}
+           disabled={loading && !prompt}
+           className="flex-1 w-full bg-black/40 border border-surface-800 rounded-lg p-4 text-surface-300 font-mono text-xs focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-colors resize-none disabled:opacity-50"
+           spellCheck={false}
+           placeholder={loading ? "Loading directives..." : "Enter system prompt here..."}
+         />
       </div>
     </div>
   );

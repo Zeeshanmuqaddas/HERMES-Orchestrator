@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import { AIR_OS_SYSTEM_PROMPT } from "./server/prompts/air-os";
+import { HERMES_ORCHESTRATOR_V1_SYSTEM_PROMPT } from "./server/prompts/hermes-v1";
 
 async function startServer() {
   const app = express();
@@ -11,6 +12,20 @@ async function startServer() {
 
   // Professional style API for orchestrator settings
   app.get("/api/system/directive", (req, res) => {
+    try {
+      res.json({
+        status: "success",
+        version: "1.0",
+        platform: "HERMES Orchestrator",
+        directive: HERMES_ORCHESTRATOR_V1_SYSTEM_PROMPT,
+      });
+    } catch (e) {
+      res.status(500).json({ status: "error", message: "Failed to retrieve system directive." });
+    }
+  });
+
+  // AIR-OS directive endpoint
+  app.get("/api/system/air-os-directive", (req, res) => {
     try {
       res.json({
         status: "success",
@@ -25,7 +40,7 @@ async function startServer() {
 
   // Orchestrator Health
   app.get("/api/health", (req, res) => {
-    res.json({ status: "ok", mode: "autonomous", active_agents: 14 });
+    res.json({ status: "ok", mode: "autonomous", active_agents: 9 });
   });
 
   // Vite middleware for development
