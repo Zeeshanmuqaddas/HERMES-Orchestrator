@@ -2,7 +2,7 @@ import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import { AIR_OS_SYSTEM_PROMPT } from "./server/prompts/air-os";
-import { HERMES_ORCHESTRATOR_V1_SYSTEM_PROMPT } from "./server/prompts/hermes-v1";
+import { HERMES_ORCHESTRATOR_V2_SYSTEM_PROMPT } from "./server/prompts/hermes-v2";
 
 async function startServer() {
   const app = express();
@@ -15,9 +15,9 @@ async function startServer() {
     try {
       res.json({
         status: "success",
-        version: "1.0",
+        version: "2.0",
         platform: "HERMES Orchestrator",
-        directive: HERMES_ORCHESTRATOR_V1_SYSTEM_PROMPT,
+        directive: HERMES_ORCHESTRATOR_V2_SYSTEM_PROMPT,
       });
     } catch (e) {
       res.status(500).json({ status: "error", message: "Failed to retrieve system directive." });
